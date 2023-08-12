@@ -1,0 +1,1 @@
+Meu primeiro contato com flask. Apenas algo simples para entender um pouco como funciona.
