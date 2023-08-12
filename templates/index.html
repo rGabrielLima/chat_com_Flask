@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>liveChat</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+
+</head>
+<body>
+    <div class="chat-container">
+        <div id="message-container"></div>
+        <form id="message-form">
+            <input type="text" id="message-input" placeholder="Digite sua mensagem...">
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        // Função para adicionar mensagens ao elemento de exibição de mensagens
+        function addMessage(message) {
+            var messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            document.getElementById('message-container').appendChild(messageElement);
+        }
+
+        // Enviar mensagem quando o formulário for enviado
+        document.getElementById('message-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var messageInput = document.getElementById('message-input');
+            var message = messageInput.value.trim();
+            if (message !== '') {
+                socket.emit('mensagem', message);
+                messageInput.value = '';
+            }
+        });
+
+        // Receber mensagem e exibi-la
+        socket.on('mensagem', function(message) {
+            addMessage(message);
+        });
+    </script>
+</body>
+</html>
